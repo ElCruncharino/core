@@ -1680,6 +1680,12 @@
       "config_flow": true,
       "iot_class": "cloud_polling"
     },
+    "eltako": {
+      "name": "Eltako",
+      "iot_standards": [
+        "matter"
+      ]
+    },
     "elv": {
       "name": "ELV PCA",
       "integration_type": "hub",
@@ -1983,6 +1989,12 @@
       "integration_type": "service",
       "config_flow": false,
       "iot_class": "cloud_polling"
+    },
+    "firefly_iii": {
+      "name": "Firefly III",
+      "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "local_polling"
     },
     "fireservicerota": {
       "name": "FireServiceRota",
@@ -2917,23 +2929,6 @@
       "iot_class": "cloud_polling",
       "single_config_entry": true
     },
-    "ibm": {
-      "name": "IBM",
-      "integrations": {
-        "watson_iot": {
-          "integration_type": "hub",
-          "config_flow": false,
-          "iot_class": "cloud_push",
-          "name": "IBM Watson IoT Platform"
-        },
-        "watson_tts": {
-          "integration_type": "hub",
-          "config_flow": false,
-          "iot_class": "cloud_push",
-          "name": "IBM Watson TTS"
-        }
-      }
-    },
     "idteck_prox": {
       "name": "IDTECK Proximity Reader",
       "integration_type": "hub",
@@ -3352,10 +3347,21 @@
       "iot_class": "local_push"
     },
     "konnected": {
-      "name": "Konnected.io",
-      "integration_type": "hub",
-      "config_flow": true,
-      "iot_class": "local_push"
+      "name": "Konnected",
+      "integrations": {
+        "konnected": {
+          "integration_type": "hub",
+          "config_flow": true,
+          "iot_class": "local_push",
+          "name": "Konnected.io (Legacy)"
+        },
+        "konnected_esphome": {
+          "integration_type": "virtual",
+          "config_flow": false,
+          "supported_by": "esphome",
+          "name": "Konnected"
+        }
+      }
     },
     "kostal_plenticore": {
       "name": "Kostal Plenticore Solar Inverter",
@@ -3481,6 +3487,12 @@
       "integration_type": "hub",
       "config_flow": true,
       "iot_class": "cloud_push"
+    },
+    "level": {
+      "name": "Level",
+      "iot_standards": [
+        "matter"
+      ]
     },
     "leviton": {
       "name": "Leviton",
@@ -3704,6 +3716,12 @@
       "config_flow": true,
       "iot_class": "cloud_polling"
     },
+    "lunatone": {
+      "name": "Lunatone",
+      "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "local_polling"
+    },
     "lupusec": {
       "name": "Lupus Electronics LUPUSEC",
       "integration_type": "hub",
@@ -3900,6 +3918,12 @@
     "meteo_france": {
       "name": "M\u00e9t\u00e9o-France",
       "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "cloud_polling"
+    },
+    "meteo_lt": {
+      "name": "Meteo.lt",
+      "integration_type": "service",
       "config_flow": true,
       "iot_class": "cloud_polling"
     },
@@ -4440,6 +4464,12 @@
       "config_flow": true,
       "iot_class": "cloud_polling",
       "single_config_entry": true
+    },
+    "nintendo_parental": {
+      "name": "Nintendo Switch Parental Controls",
+      "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "cloud_polling"
     },
     "nissan_leaf": {
       "name": "Nissan Leaf",
@@ -5068,12 +5098,6 @@
       "integration_type": "hub",
       "config_flow": true,
       "iot_class": "local_polling"
-    },
-    "plum_lightpad": {
-      "name": "Plum Lightpad",
-      "integration_type": "hub",
-      "config_flow": true,
-      "iot_class": "local_push"
     },
     "pocketcasts": {
       "name": "Pocket Casts",
@@ -6813,7 +6837,8 @@
       "name": "Thread",
       "integration_type": "service",
       "config_flow": true,
-      "iot_class": "local_polling"
+      "iot_class": "local_polling",
+      "single_config_entry": true
     },
     "tibber": {
       "name": "Tibber",
@@ -7375,12 +7400,6 @@
       "config_flow": true,
       "iot_class": "cloud_polling"
     },
-    "vultr": {
-      "name": "Vultr",
-      "integration_type": "hub",
-      "config_flow": false,
-      "iot_class": "cloud_polling"
-    },
     "w800rf32": {
       "name": "WGL Designs W800RF32",
       "integration_type": "hub",
@@ -7416,6 +7435,12 @@
       "integration_type": "hub",
       "config_flow": true,
       "iot_class": "local_push"
+    },
+    "watson_tts": {
+      "name": "IBM Watson TTS",
+      "integration_type": "hub",
+      "config_flow": false,
+      "iot_class": "cloud_push"
     },
     "watttime": {
       "name": "WattTime",
