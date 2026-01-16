@@ -36,6 +36,41 @@ _LOGGER = logging.getLogger(__name__)
 # Cache TTL for backup list (in seconds)
 CACHE_TTL = 300
 
+
+class _ExhaustibleAsyncIterator:
+    """Wrapper that tracks stream exhaustion to prevent blocking on repeated reads.
+
+    The AsyncIteratorWriter used by the cipher streaming layer will block forever
+    if __anext__ is called after the stream is exhausted (the queue is empty and
+    no one will ever write to it again). This wrapper tracks exhaustion state and
+    immediately raises StopAsyncIteration on subsequent calls.
+    """
+
+    def __init__(self, stream: AsyncIterator[bytes]) -> None:
+        """Initialize the wrapper."""
+        self._stream = stream
+        self._exhausted = False
+
+    def __aiter__(self) -> "_ExhaustibleAsyncIterator":
+        """Return the iterator."""
+        return self
+
+    async def __anext__(self) -> bytes:
+        """Get the next chunk, tracking exhaustion."""
+        if self._exhausted:
+            raise StopAsyncIteration
+        try:
+            data = await self._stream.__anext__()
+        except StopAsyncIteration:
+            self._exhausted = True
+            raise
+        # Empty bytes signals end of stream
+        if not data:
+            self._exhausted = True
+            raise StopAsyncIteration
+        return data
+
+
 # Timeout for upload operations (in seconds)
 # This prevents uploads from hanging indefinitely
 UPLOAD_TIMEOUT = 43200  # 12 hours (matches B2 HTTP timeout)
@@ -328,7 +363,10 @@ class BackblazeBackupAgent(BackupAgent):
         _LOGGER.debug("Starting streaming upload for %s", filename)
 
         stream = await open_stream()
-        reader = AsyncIteratorReader(self._hass.loop, stream)
+        # Wrap the stream to track exhaustion and prevent blocking on repeated reads
+        # after the stream is exhausted (fixes hang with encrypted backups)
+        wrapped_stream = _ExhaustibleAsyncIterator(stream)
+        reader = AsyncIteratorReader(self._hass.loop, wrapped_stream)
 
         _LOGGER.debug("Uploading backup file %s with streaming", filename)
         try:
